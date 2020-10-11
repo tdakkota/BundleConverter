@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.ncedu.tdakkota.converter.ASCIIUtil.encodeASCII;
 
 class BundleWriterTest {
@@ -18,13 +18,19 @@ class BundleWriterTest {
         BundleWriter w = new BundleWriter(s);
         List<Line> l = new LinkedList<>();
         l.add(new Line("key", "value", "comment"));
+        l.add(new Line("key2", "value2"));
         l.add(new Line("ключ", "значение", "комментарий"));
         w.write(l);
 
-        String[] lines = s.toString().split("\\r?\\n");
-        assertEquals("#comment", lines[0]);
-        assertEquals("key=value", lines[1]);
-        assertEquals("#комментарий", lines[2]);
-        assertEquals(encodeASCII("ключ") + "=" + encodeASCII("значение"), lines[3]);
+        String[] expectedLines = new String[]{
+                "#comment",
+                "key=value",
+                "key2=value2",
+                "#комментарий",
+                encodeASCII("ключ") + "=" + encodeASCII("значение"),
+                "",
+        };
+
+        assertEquals(String.join(System.lineSeparator(), expectedLines), s.toString());
     }
 }
