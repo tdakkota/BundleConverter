@@ -60,9 +60,6 @@ public class JavaParser implements BundleParser {
         List<Line> lines = new ArrayList<>();
         for (ArrayInitializerExpr a : l) {
             lines.addAll(collectLinesFromArrayLiteral(a));
-            if (lines.size() > 0) {
-                break;
-            }
         }
 
         return lines;

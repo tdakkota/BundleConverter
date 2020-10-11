@@ -1,9 +1,6 @@
 package ru.ncedu.tdakkota.converter;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.List;
 
 import static ru.ncedu.tdakkota.converter.ASCIIUtil.writeASCII;
@@ -15,6 +12,13 @@ public class BundleWriter implements Closeable, AutoCloseable {
         this.w = new OutputStreamWriter(s);
     }
 
+    public BundleWriter(File f) throws FileNotFoundException {
+        this.w = new OutputStreamWriter(new FileOutputStream(f));
+    }
+
+    public static void writeToFile(File f, List<Line> lines) throws IOException {
+        new BundleWriter(f).write(lines);
+    }
 
     public void write(List<Line> lines) throws IOException {
         for (Line line : lines) {
